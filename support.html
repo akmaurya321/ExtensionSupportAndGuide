@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Support – AutoPDF Collector</title>
+
+    <meta name="description"
+          content="Support page for AutoPDF Collector. Get help, report issues, request new features, and read FAQs."/>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            background: #f7f9fc;
+            font-family: "Inter", sans-serif;
+            color: #2a2a2a;
+        }
+        header {
+            background: white;
+            padding: 20px 40px;
+            border-bottom: 1px solid #e6e6e6;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4a3aff;
+        }
+        main {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 18px;
+            color: #444;
+            line-height: 1.6;
+        }
+        .section {
+            margin-top: 50px;
+        }
+        .section h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #4a3aff;
+        }
+        .box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
+        .faq-item {
+            margin-bottom: 20px;
+        }
+        .faq-item h3 {
+            margin: 0;
+            font-size: 20px;
+            color: #333;
+        }
+        .faq-item p {
+            margin: 5px 0 0 0;
+            color: #555;
+        }
+        a.btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #4a3aff;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        a.btn:hover {
+            background: #372cff;
+        }
+        footer {
+            margin-top: 80px;
+            padding: 40px 20px;
+            background: #1a1a1a;
+            text-align: center;
+            color: white;
+        }
+        footer a {
+            color: #a9a9ff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">AutoPDF Collector</div>
+    <a href="index.html" style="color:#4a3aff; font-weight:600; text-decoration:none;">Home</a>
+</header>
+
+<main>
+
+    <h1>Support Center</h1>
+    <p>
+        Need help? You're in the right place.
+        Whether you are facing issues, want to suggest a feature, or need technical assistance,
+        we are here to help.
+    </p>
+
+    <!-- Contact -->
+    <div class="section">
+        <h2>📨 Contact Us</h2>
+        <div class="box">
+            <p><strong>Email:</strong> autopdf.collector@gmail.com</p>
+            <p>We respond within 24–48 hours.</p>
+        </div>
+    </div>
+
+    <!-- Bug Report -->
+    <div class="section">
+        <h2>🐞 Report a Bug</h2>
+        <div class="box">
+            <p>If something isn’t working correctly in the extension, please report it here:</p>
+            <a class="btn" href="https://github.com/yourusername/autopdf-collector/issues" target="_blank">
+                Report Issue on GitHub
+            </a>
+        </div>
+    </div>
+
+    <!-- Feature Requests -->
+    <div class="section">
+        <h2>💡 Request a Feature</h2>
+        <div class="box">
+            <p>Have an idea that can improve AutoPDF Collector? Let us know:</p>
+            <a class="btn" href="https://github.com/yourusername/autopdf-collector/issues" target="_blank">
+                Submit Feature Request
+            </a>
+        </div>
+    </div>
+
+    <!-- FAQs -->
+    <div class="section">
+        <h2>❓ Frequently Asked Questions</h2>
+
+        <div class="box faq-item">
+            <h3>How do I collect content from websites?</h3>
+            <p>Just select text → Right-click → “Add to AutoPDF Collector”.</p>
+        </div>
+
+        <div class="box faq-item">
+            <h3>My AI Summaries are failing. What should I do?</h3>
+            <p>Add your own OpenAI, Gemini or HuggingFace API key in Settings.  
+               This keeps usage free and unlimited for you.</p>
+        </div>
+
+        <div class="box faq-item">
+            <h3>Why can I export only 15 PDFs?</h3>
+            <p>
+                Free users get 15 PDF exports. Upgrading to Premium unlocks unlimited export and
+                premium themes + highlight tools.
+            </p>
+        </div>
+
+        <div class="box faq-item">
+            <h3>Does AutoPDF Collector upload my data to servers?</h3>
+            <p>No. Your content stays **offline**, inside your browser storage.</p>
+        </div>
+
+        <div class="box faq-item">
+            <h3>How do I restore a saved project?</h3>
+            <p>
+                Click “Saved Projects” → Choose any saved workspace → Load with or without existing snippets.
+            </p>
+        </div>
+
+        <div class="box faq-item">
+            <h3>Can I edit PDF files inside the extension?</h3>
+            <p>
+                Yes, basic text extraction is supported. Full editing is not possible (Adobe-level PDF editing requires server AI).
+            </p>
+        </div>
+
+    </div>
+
+</main>
+
+<footer>
+    © 2025 AutoPDF Collector — 
+    <a href="support.html">Support</a> • 
+    <a href="privacy.html">Privacy Policy</a>
+</footer>
+
+</body>
+</html>
