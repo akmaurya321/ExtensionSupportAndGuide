@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoPDF Collector - Responsive</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 1s ease;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 10;
+        }
+
+        .slide.exit {
+            opacity: 0;
+            transform: scale(1.2);
+        }
+
+        /* Hero Slide */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease;
+        }
+
+        .logo-animation {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            animation: slideInFromLeft 1s ease;
+        }
+
+        .hero .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            animation: slideInFromRight 1s ease 0.5s backwards;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            animation: fadeIn 1s ease 1s backwards;
+        }
+
+        /* Feature Slides */
+        .feature-slide {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        .feature-content {
+            max-width: 1400px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            color: white;
+        }
+
+        .feature-text h2 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            color: #ffd700;
+            animation: slideInFromLeft 0.8s ease;
+        }
+
+        .feature-text ul {
+            list-style: none;
+            font-size: 1.3rem;
+            line-height: 2;
+        }
+
+        .feature-text li {
+            padding-left: 35px;
+            position: relative;
+            margin: 15px 0;
+            opacity: 0;
+            animation: fadeInLeft 0.6s ease forwards;
+        }
+
+        .feature-text li:nth-child(1) { animation-delay: 0.3s; }
+        .feature-text li:nth-child(2) { animation-delay: 0.5s; }
+        .feature-text li:nth-child(3) { animation-delay: 0.7s; }
+        .feature-text li:nth-child(4) { animation-delay: 0.9s; }
+        .feature-text li:nth-child(5) { animation-delay: 1.1s; }
+
+        .feature-text li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+            font-weight: bold;
+            font-size: 1.8rem;
+        }
+
+        .feature-visual {
+            background: rgba(255,255,255,0.1);
+            padding: 50px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255,255,255,0.3);
+            text-align: center;
+            animation: scaleIn 0.8s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .icon-large {
+            font-size: 6rem;
+            margin-bottom: 25px;
+            display: block;
+            animation: pulse 2s infinite;
+        }
+
+        .feature-visual h3 {
+            font-size: 2rem;
+        }
+
+        .feature-visual p {
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+
+        /* Pricing Slide */
+        .pricing {
+            background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .pricing-box {
+            background: rgba(255,255,255,0.15);
+            padding: 50px 40px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            max-width: 700px;
+            animation: scaleIn 0.8s ease;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .pricing-box h2 {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .pricing-box > p {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+        }
+
+        .price-item {
+            font-size: 1.6rem;
+            margin: 15px 0;
+            padding: 18px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 15px;
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .price-item:nth-child(2) { animation-delay: 0.3s; }
+        .price-item:nth-child(3) { animation-delay: 0.5s; }
+        .price-item:nth-child(4) { animation-delay: 0.7s; }
+        .price-item:nth-child(5) { animation-delay: 0.9s; }
+
+        /* CTA Slide */
+        .cta {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 3.5rem;
+            margin-bottom: 35px;
+            animation: bounceIn 1s ease;
+        }
+
+        .cta-button {
+            background: white;
+            color: #f5576c;
+            padding: 25px 60px;
+            font-size: 1.6rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            animation: pulse 2s infinite;
+        }
+
+        .cta p {
+            margin-top: 30px;
+            font-size: 1.2rem;
+            animation: fadeIn 1s ease 1s backwards;
+        }
+
+        .cta p:last-child {
+            font-size: 1.5rem;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #4ade80, #ffd700, #f5576c);
+            width: 0%;
+            transition: width 0.3s ease;
+            z-index: 1000;
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 12px;
+        }
+
+        .control-btn {
+            background: rgba(255,255,255,0.3);
+            border: 2px solid white;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            background: white;
+            color: #667eea;
+            transform: scale(1.05);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 1.2rem;
+            background: rgba(0,0,0,0.6);
+            padding: 12px 25px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            animation: fadeIn 1s ease;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 20px 15px;
+            }
+
+            .logo-animation {
+                font-size: 4rem;
+                margin-bottom: 15px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+
+            .hero .tagline {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+            }
+
+            .hero .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .feature-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                max-width: 100%;
+            }
+
+            .feature-text h2 {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+
+            .feature-text ul {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .feature-text li {
+                padding-left: 30px;
+                margin: 10px 0;
+            }
+
+            .feature-text li:before {
+                font-size: 1.5rem;
+            }
+
+            .feature-visual {
+                padding: 30px;
+                order: -1;
+            }
+
+            .icon-large {
+                font-size: 4rem;
+                margin-bottom: 15px;
+            }
+
+            .feature-visual h3 {
+                font-size: 1.5rem;
+            }
+
+            .feature-visual p {
+                font-size: 0.95rem;
+                margin-top: 10px;
+            }
+
+            .pricing-box {
+                padding: 30px 20px;
+                max-width: 100%;
+            }
+
+            .pricing-box h2 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+
+            .pricing-box > p {
+                font-size: 1rem;
+                margin-bottom: 20px;
+            }
+
+            .price-item {
+                font-size: 1.2rem;
+                padding: 15px;
+                margin: 12px 0;
+            }
+
+            .cta h2 {
+                font-size: 2rem;
+                margin-bottom: 25px;
+            }
+
+            .cta-button {
+                padding: 20px 45px;
+                font-size: 1.2rem;
+            }
+
+            .cta p {
+                margin-top: 20px;
+                font-size: 0.95rem;
+            }
+
+            .cta p:last-child {
+                font-size: 1.2rem;
+            }
+
+            .controls {
+                bottom: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .control-btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+
+            .slide-counter {
+                top: 15px;
+                right: 15px;
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+
+            .progress-bar {
+                height: 4px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .hero .tagline {
+                font-size: 0.95rem;
+            }
+
+            .hero .subtitle {
+                font-size: 0.8rem;
+            }
+
+            .feature-text h2 {
+                font-size: 1.5rem;
+            }
+
+            .feature-text ul {
+                font-size: 0.9rem;
+            }
+
+            .feature-visual {
+                padding: 25px;
+            }
+
+            .icon-large {
+                font-size: 3.5rem;
+            }
+
+            .feature-visual h3 {
+                font-size: 1.3rem;
+            }
+
+            .pricing-box h2 {
+                font-size: 1.8rem;
+            }
+
+            .price-item {
+                font-size: 1.1rem;
+            }
+
+            .cta h2 {
+                font-size: 1.7rem;
+            }
+
+            .cta-button {
+                padding: 18px 40px;
+                font-size: 1.1rem;
+            }
+
+            .control-btn {
+                padding: 8px 14px;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-30px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    <div class="slide-counter" id="counter">1 / 9</div>
+
+    <div class="video-container">
+        <!-- Slide 1: Hero -->
+        <div class="slide active hero">
+            <div class="hero-content">
+                <div class="logo-animation">📄</div>
+                <h1>AutoPDF Collector</h1>
+                <p class="tagline">Capture, Edit & Organize Anything From The Web</p>
+                <p class="subtitle">For Students • Researchers • Coders • Bloggers</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Collect Feature -->
+        <div class="slide feature-slide">
+            <div class="feature-content">
+                <div class="feature-text">
+                    <h2>✂️ Collect in One Click</h2>
+                    <ul>
+                        <li>Right-click → Save instantly</li>
+                        <li>Text, Images, Tables</li>
+                        <li>Formulas & Code blocks</li>
+                        <li>Full HTML with styling</li>
+                        <li>Everything to dashboard</li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <span class="icon-large">📋</span>
+                    <h3>One-Click Collection</h3>
+                    <p>No copy-paste hassle!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Edit Mode -->
+        <div class="slide feature-slide">
+            <div class="feature-content">
+                <div class="feature-visual">
+                    <span class="icon-large">🖊️</span>
+                    <h3>Full Edit Power</h3>
+                    <p>Like MS Word!</p>
+                </div>
+                <div class="feature-text">
+                    <h2>✏️ Full Edit Mode</h2>
+                    <ul>
+                        <li>Resize & Crop images</li>
+                        <li>Add & edit tables</li>
+                        <li>Rich text formatting</li>
+                        <li>Font customization</li>
+                        <li>Copy-paste anything</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: AI Feature -->
+        <div class="slide feature-slide">
+            <div class="feature-content">
+                <div class="feature-text">
+                    <h2>🤖 AI Powered</h2>
+                    <ul>
+                        <li>OpenAI, Gemini, Hugging Face</li>
+                        <li>Summarize content instantly</li>
+                        <li>Ask AI anything</li>
+                        <li>Explain complex concepts</li>
+                        <li>Built into dashboard</li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <span class="icon-large">🧠</span>
+                    <h3>AI Integration</h3>
+                    <p>Your smart assistant!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Themes -->
+        <div class="slide feature-slide">
+            <div class="feature-content">
+                <div class="feature-visual">
+                    <span class="icon-large">🎨</span>
+                    <h3>Beautiful Design</h3>
+                    <p>8 gorgeous themes!</p>
+                </div>
+                <div class="feature-text">
+                    <h2>🎨 Stunning Themes</h2>
+                    <ul>
+                        <li>Classic, Dark, Modern</li>
+                        <li>Aurora, Notebook Pro</li>
+                        <li>Minimal White & More</li>
+                        <li>Custom CSS support</li>
+                        <li>Make notes beautiful</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Export -->
+        <div class="slide feature-slide">
+            <div class="feature-content">
+                <div class="feature-text">
+                    <h2>📤 Export Anywhere</h2>
+                    <ul>
+                        <li>Export to PDF with themes</li>
+                        <li>HTML with images/GIFs</li>
+                        <li>JSON project backup</li>
+                        <li>Merge & Split PDFs</li>
+                        <li>Professional quality</li>
+                    </ul>
+                </div>
+                <div class="feature-visual">
+                    <span class="icon-large">📦</span>
+                    <h3>Multiple Formats</h3>
+                    <p>Your way!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Navigation -->
+        <div class="slide feature-slide">
+            <div class="feature-content">
+                <div class="feature-visual">
+                    <span class="icon-large">🧭</span>
+                    <h3>Easy Navigation</h3>
+                    <p>Find anything fast!</p>
+                </div>
+                <div class="feature-text">
+                    <h2>🔍 Smart Search</h2>
+                    <ul>
+                        <li>Previous/Next snippets</li>
+                        <li>Snippet index numbers</li>
+                        <li>Auto-scroll dashboard</li>
+                        <li>Smart keyword search</li>
+                        <li>Find anything instantly</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Pricing -->
+        <div class="slide pricing">
+            <div class="pricing-box">
+                <h2>👑 Freemium Model</h2>
+                <p>ALL features free! After 15 exports:</p>
+                <div class="price-item">₹3 / week</div>
+                <div class="price-item">₹11 / month</div>
+                <div class="price-item">₹29 / 6 months</div>
+                <div class="price-item">₹51 / year</div>
+            </div>
+        </div>
+
+        <!-- Slide 9: CTA -->
+        <div class="slide cta">
+            <div>
+                <h2>Save HOURS Every Day! ⚡</h2>
+                <button class="cta-button">Get it on Chrome Store</button>
+                <p>Available Now • No Login Required • 100% Local Storage</p>
+                <p>Try it once → You'll use it every day! 🚀</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="control-btn" id="pauseBtn">⏸ Pause</button>
+        <button class="control-btn" id="restartBtn">↻ Restart</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 9;
+        const slideDuration = 5000;
+        let autoPlayInterval;
+        let isPaused = false;
+
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('progressBar');
+        const counter = document.getElementById('counter');
+        const pauseBtn = document.getElementById('pauseBtn');
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'exit');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('exit');
+                }
+            });
+
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
+            counter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            } else {
+                currentSlide = 0;
+                updateSlide();
+            }
+        }
+
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(nextSlide, slideDuration);
+        }
+
+        function togglePause() {
+            if (isPaused) {
+                startAutoPlay();
+                pauseBtn.textContent = '⏸ Pause';
+                isPaused = false;
+            } else {
+                clearInterval(autoPlayInterval);
+                pauseBtn.textContent = '▶ Play';
+                isPaused = true;
+            }
+        }
+
+        function restart() {
+            currentSlide = 0;
+            updateSlide();
+            if (isPaused) {
+                togglePause();
+            }
+        }
+
+        pauseBtn.addEventListener('click', togglePause);
+        document.getElementById('restartBtn').addEventListener('click', restart);
+
+        startAutoPlay();
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ') {
+                e.preventDefault();
+                togglePause();
+            } else if (e.key === 'r' || e.key === 'R') {
+                restart();
+            }
+        });
+    </script>
+</body>
+</html>
